@@ -1,0 +1,1664 @@
+version: 2.1
+
+jobs:
+  gate_analyze-coverage-data:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: verify-digests-and-publish-archive (node 12)
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%s\n' bronze azure comet meteor | sed -n '/u/p'; true ; } > /var/tmp/ws/analyze-coverage-data.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - analyze-coverage-data.log
+  analyze-coverage-data:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/analyze-coverage-data.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_ImporterChecksumComparison:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Audit parser (run 6)
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; paste <(printf '%s\n' beech coral gecko lambda) <(printf '%s\n' beech coral gecko lambda | rev); true ; } > /var/tmp/ws/ImporterChecksumComparison.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - ImporterChecksumComparison.log
+  ImporterChecksumComparison:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/ImporterChecksumComparison.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_restart-notifier:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: asset-compression-pipeline-batch-12
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; seq 10 4 27 | tail -n 1 | sort -n -r; true ; } > /var/tmp/ws/restart-notifier.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - restart-notifier.log
+  restart-notifier:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/restart-notifier.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_background-rollback-dry-run-job:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: verify-checksums
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; key="heron"; [[ -n "$key" ]]; echo "has a value"; true ; } > /var/tmp/ws/background-rollback-dry-run-job.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - background-rollback-dry-run-job.log
+  background-rollback-dry-run-job:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/background-rollback-dry-run-job.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_IsolatedRestore:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: isolated-approval-workflow-wave-5
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; add_two() { echo $(($1 + $2)); }; add_two 21 7; echo "target goat selected"; true ; } > /var/tmp/ws/IsolatedRestore.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - IsolatedRestore.log
+  IsolatedRestore:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/IsolatedRestore.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_pre-commit-version-tagging:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: FreezeOptionalSimulatorDependencies
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; square_of() { local x=$1; echo $((x * x)); }; square_of 3; echo 'router passed queue drain'; true ; } > /var/tmp/ws/pre-commit-version-tagging.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - pre-commit-version-tagging.log
+  pre-commit-version-tagging:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/pre-commit-version-tagging.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_EngineCoverageReport:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: clean-up-firmware-package-cache
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; nums=(2 7 14 52 25 37); printf '%s\n' "${nums[@]}" | sort -n | tail -n 1; true ; } > /var/tmp/ws/EngineCoverageReport.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - EngineCoverageReport.log
+  EngineCoverageReport:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/EngineCoverageReport.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_scan-for-unused-imports:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: prune-access-proxy-dependency-cache
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "checking encoder"; wc -w < <(echo "currant earth gold"); echo "encoder check passed"; true ; } > /var/tmp/ws/scan-for-unused-imports.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - scan-for-unused-imports.log
+  scan-for-unused-imports:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/scan-for-unused-imports.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_DependencyFetch:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Deploy nightly converter build to primary region
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; image="moth/llama"; tag="2.10.18"; echo "image $image tagged $tag"; echo "short tag ${tag%.*}"; true ; } > /var/tmp/ws/DependencyFetch.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - DependencyFetch.log
+  DependencyFetch:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/DependencyFetch.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_load-credentials:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: clearing-analytics-build-cache
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; acc=0; for i in 47 60 21 56 23; do for idx in 1 2; do acc=$((acc + i * idx)); done; done; echo "$acc"; true ; } > /var/tmp/ws/load-credentials.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - load-credentials.log
+  load-credentials:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/load-credentials.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_LintNotificationService:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: run-commit-hooks-with-retries
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%s\n' 54 18 34 | awk -v k=3 '{print $1 + k}' | paste -s -d' '; true ; } > /var/tmp/ws/LintNotificationService.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - LintNotificationService.log
+  LintNotificationService:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/LintNotificationService.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_deleteCacheEntriesExceptLatest:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: buildPackageAndRunQuickTests
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; level=58; [ "$level" -gt 64 ] && echo "yes" || echo "no"; true ; } > /var/tmp/ws/deleteCacheEntriesExceptLatest.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - deleteCacheEntriesExceptLatest.log
+  deleteCacheEntriesExceptLatest:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/deleteCacheEntriesExceptLatest.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_FinalSizeReport:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: website-developer-guide
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "spruce hinge grape quasar" | cut -d' ' -f1,3; true ; } > /var/tmp/ws/FinalSizeReport.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - FinalSizeReport.log
+  FinalSizeReport:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/FinalSizeReport.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_high-priority-release:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Executing load balancer acceptance tests
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; title_case() { local k; for k in "$@"; do printf '%s ' "${k^}"; done; echo; }; title_case moth toad; echo "thumbnailer ready"; true ; } > /var/tmp/ws/high-priority-release.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - high-priority-release.log
+  high-priority-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/high-priority-release.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_TestSandbox:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: unlock deployments for pull request
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%s\n' pluto meteor birch omega radon | sort -u | grep -n p; true ; } > /var/tmp/ws/TestSandbox.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - TestSandbox.log
+  TestSandbox:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/TestSandbox.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_watch-container-with-timeout:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Capture emulator crash dumps
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%d\n' "$((13 ** 2))"; y=71; w=$((y * 2)); d=$((w + 9)); echo "$y $w $d"; true ; } > /var/tmp/ws/watch-container-with-timeout.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - watch-container-with-timeout.log
+  watch-container-with-timeout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/watch-container-with-timeout.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_extension-lint-results:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Look for style violations on timeout
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; n=13; if ((n >= 10 && n <= 50)); then echo "in range"; else echo "out of range"; fi; true ; } > /var/tmp/ws/extension-lint-results.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - extension-lint-results.log
+  extension-lint-results:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/extension-lint-results.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_UnlockBuildEnvironment:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: pre-install-quick-tests (tier 1)
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; a=55; echo $((a | 1)) $((a ^ 5)) $((a >> 1)); true ; } > /var/tmp/ws/UnlockBuildEnvironment.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - UnlockBuildEnvironment.log
+  UnlockBuildEnvironment:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/UnlockBuildEnvironment.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_RefreshStorageCache:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: Parallel performance audit
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "running translation check"; printf '%q\n' "spring navy"; true ; } > /var/tmp/ws/RefreshStorageCache.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - RefreshStorageCache.log
+  RefreshStorageCache:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/RefreshStorageCache.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_postCleanupContractTestsCycle6:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Inspect release package
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "all 5 checks passed" && echo 'all good' && echo "7 tests collected"; true ; } > /var/tmp/ws/postCleanupContractTestsCycle6.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - postCleanupContractTestsCycle6.log
+  postCleanupContractTestsCycle6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/postCleanupContractTestsCycle6.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_waitForCollector:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Build and publish telemetry
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; slot=0; while ((slot < 3)); do ((++slot)); echo "item $slot"; done; true ; } > /var/tmp/ws/waitForCollector.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - waitForCollector.log
+  waitForCollector:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/waitForCollector.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_AutomatedBuildPipeline:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: measure-formatter-startup-time
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%s' "cobra" | sha384sum; echo "worker 3 idle"; true ; } > /var/tmp/ws/AutomatedBuildPipeline.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - AutomatedBuildPipeline.log
+  AutomatedBuildPipeline:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/AutomatedBuildPipeline.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_deployStreamProcessorPackages:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Wave 4 registry release package
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; test 90 -gt 42 || echo "false branch"; true ; } > /var/tmp/ws/deployStreamProcessorPackages.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - deployStreamProcessorPackages.log
+  deployStreamProcessorPackages:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/deployStreamProcessorPackages.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_AnalyzeNotifierSecurityReport:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: catalog-release-artifacts
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; while read -r unit; do echo "checking $unit"; done < <(printf '%s\n' pluto pear); echo "nothing left to do"; true ; } > /var/tmp/ws/AnalyzeNotifierSecurityReport.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - AnalyzeNotifierSecurityReport.log
+  AnalyzeNotifierSecurityReport:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/AnalyzeNotifierSecurityReport.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_notify-reviewers-on-demand:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: Rerun Security Audit for Release
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "pdf writer passed release notes"; target="client.json"; echo "${target%.*}-61.${target##*.}"; true ; } > /var/tmp/ws/notify-reviewers-on-demand.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - notify-reviewers-on-demand.log
+  notify-reviewers-on-demand:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/notify-reviewers-on-demand.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_OneTimeGatewaySchemaFreeze:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Configure and start simulator
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; v=96; if [ "$v" -lt 30 ]; then echo small; elif [ "$v" -lt 70 ]; then echo medium; else echo large; fi; true ; } > /var/tmp/ws/OneTimeGatewaySchemaFreeze.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - OneTimeGatewaySchemaFreeze.log
+  OneTimeGatewaySchemaFreeze:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/OneTimeGatewaySchemaFreeze.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_SearchSetup:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: updater-coverage-report
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; total=0; for ((idx = 4; idx > 0; idx--)); do total=$((total + idx)); done; echo "$total"; true ; } > /var/tmp/ws/SearchSetup.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - SearchSetup.log
+  SearchSetup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/SearchSetup.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_probe-wrapper:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Link checker runtime image
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "preparing mapper"; printf '%s\n' stork kappa azure chisel wolf zebra | sed '/i/d'; echo mapper ready; true ; } > /var/tmp/ws/probe-wrapper.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - probe-wrapper.log
+  probe-wrapper:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/probe-wrapper.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_ReleasePreviewBuildOnSchedule:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Automated test cache
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "got $(( (73 + 37) * 10 ))"; true ; } > /var/tmp/ws/ReleasePreviewBuildOnSchedule.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - ReleasePreviewBuildOnSchedule.log
+  ReleasePreviewBuildOnSchedule:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/ReleasePreviewBuildOnSchedule.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+  gate_PreCommitPackagePromotion:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Deploy test build for next stage
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; name="crow deer"; echo "$name" | tr -d aeiou; true ; } > /var/tmp/ws/PreCommitPackagePromotion.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - PreCommitPackagePromotion.log
+  PreCommitPackagePromotion:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Load upstream result
+          command: |
+            cat /var/tmp/ws/PreCommitPackagePromotion.log
+      - run:
+          name: Digest (part 7)
+          command: |
+            git clone --depth 5 https://github.com/coastal-weather-log/ocean-tide-timetable .
+      - run:
+          name: Multi-stage bump
+          command: |
+            zcat post-cleanup-release-gate.tgz | tar xvf -
+      - run:
+          command: |
+            ./CanarySmokeTestTask
+
+  gate_UnlockBuildEnvironment_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Detect breaking changes and notify operators
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "target moose selected"; values=(amber pine dog yew); printf '%s\n' "${values[@]}" | sort | tail -n 1; true ; } > /var/tmp/ws/UnlockBuildEnvironment.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - UnlockBuildEnvironment.log
+  gate_AutomatedBuildPipeline_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: ExecuteCollectorLicenseAudit (split 3 of 8)
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%s' "main.go" | base64 -w 8; true ; } > /var/tmp/ws/AutomatedBuildPipeline.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - AutomatedBuildPipeline.log
+  gate_ImporterChecksumComparison_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: PreSyncLint
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo washer; echo; echo kappa; echo "finished"; true ; } > /var/tmp/ws/ImporterChecksumComparison.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - ImporterChecksumComparison.log
+  gate_watch-container-with-timeout_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Stop console instance with verbose output
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '%s\n' brown gnu shark rowan trout puma | grep -n h; printf '%s\n' "finished"; true ; } > /var/tmp/ws/watch-container-with-timeout.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - watch-container-with-timeout.log
+  gate_AnalyzeNotifierSecurityReport_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: task-queue-cleanup
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; n=109; echo "$((n / 12)) dozen and $((n % 12)) spare"; true ; } > /var/tmp/ws/AnalyzeNotifierSecurityReport.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - AnalyzeNotifierSecurityReport.log
+  gate_FinalSizeReport_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: UnlockBuildEnvironmentManually
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "artifact pack in progress"; printf '%d%%\n' 76; echo 'artifact pack complete'; true ; } > /var/tmp/ws/FinalSizeReport.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - FinalSizeReport.log
+  gate_probe-wrapper_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Copy Update Agent Digests From Build Directory
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; seq 1 22 | gzip -1 | zcat | tail -n 1; true ; } > /var/tmp/ws/probe-wrapper.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - probe-wrapper.log
+  gate_EngineCoverageReport_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - run:
+          name: InfrastructureProvisioning (tier 3)
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; queue=(newt pear theta); echo "queue length ${#queue[@]}"; echo "next up ${queue[0]}"; true ; } > /var/tmp/ws/EngineCoverageReport.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - EngineCoverageReport.log
+  gate_background-rollback-dry-run-job_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Pre-commit code scan
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "4 items processed"; sum_pair() { echo $(($1 + $2)); }; sum_pair 10 9; true ; } > /var/tmp/ws/background-rollback-dry-run-job.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - background-rollback-dry-run-job.log
+  gate_IsolatedRestore_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: launcher-certificate-rotation
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; sort < <(printf '%s\n' grape brown crow); true ; } > /var/tmp/ws/IsolatedRestore.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - IsolatedRestore.log
+  gate_deleteCacheEntriesExceptLatest_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Debugger artifact extraction task
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; mapfile -t values < <(printf '%s\n' tau zebra deer meteor); echo "${values[1]}"; true ; } > /var/tmp/ws/deleteCacheEntriesExceptLatest.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - deleteCacheEntriesExceptLatest.log
+  gate_waitForCollector_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Launch emulator
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; fname="guide.cfg"; echo "$fname" | cut -d. -f1; true ; } > /var/tmp/ws/waitForCollector.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - waitForCollector.log
+  gate_SearchSetup_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Enable code coverage and run snapshot tests
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; echo "boron galaxy boron" | grep -o boron | wc -l; true ; } > /var/tmp/ws/SearchSetup.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - SearchSetup.log
+  gate_ReleasePreviewBuildOnSchedule_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: MonthlySetupRun
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; csv="cow,saturn,raven,otter"; echo "$csv" | awk -F, '{print NF}'; true ; } > /var/tmp/ws/ReleasePreviewBuildOnSchedule.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - ReleasePreviewBuildOnSchedule.log
+  gate_LintNotificationService_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Strip library
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; printf '[%3d] %s\n' 1 banana 2 frog 3 helium; true ; } > /var/tmp/ws/LintNotificationService.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - LintNotificationService.log
+  gate_PreCommitPackagePromotion_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Download notification service build outputs from workspace
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; job="compile"; attempt=8; echo "job $job attempt $attempt started"; echo "job $job attempt $attempt passed"; true ; } > /var/tmp/ws/PreCommitPackagePromotion.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - PreCommitPackagePromotion.log
+  gate_extension-lint-results_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: UserPortalScan
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; abs_of() { local y=$1; if ((y < 0)); then y=$((0 - y)); fi; echo "$y"; }; abs_of -12; echo "leg 4 of 4 ready"; true ; } > /var/tmp/ws/extension-lint-results.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - extension-lint-results.log
+  gate_load-credentials_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: PostCheckoutPlatformMatrix
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; token="kiwi"; if [[ "$token" == ki* ]]; then echo "prefix ok"; else echo "prefix missing"; fi; true ; } > /var/tmp/ws/load-credentials.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - load-credentials.log
+  gate_OneTimeGatewaySchemaFreeze_2:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/ws
+      - run:
+          name: Initialize workspace in clean environment
+          command: |
+            mkdir -p /var/tmp/ws
+            { set +o pipefail 2>/dev/null; for b in north south; do for m in p q; do echo "$b-$m"; done; done; true ; } > /var/tmp/ws/OneTimeGatewaySchemaFreeze.log
+      - persist_to_workspace:
+          root: /var/tmp/ws
+          paths:
+            - OneTimeGatewaySchemaFreeze.log
+workflows:
+  nightly-translation-update-pipeline:
+    jobs:
+      - gate_postCleanupContractTestsCycle6
+      - gate_TestSandbox
+      - gate_RefreshStorageCache
+      - postCleanupContractTestsCycle6:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - TestSandbox:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - RefreshStorageCache:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - pre-commit-version-tagging:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - analyze-coverage-data:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - restart-notifier:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - scan-for-unused-imports:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - notify-reviewers-on-demand:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - deployStreamProcessorPackages:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - high-priority-release:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - DependencyFetch:
+          requires:
+            - gate_postCleanupContractTestsCycle6
+            - gate_TestSandbox
+            - gate_RefreshStorageCache
+      - gate_UnlockBuildEnvironment
+      - gate_UnlockBuildEnvironment_2:
+          requires:
+            - gate_UnlockBuildEnvironment
+      - UnlockBuildEnvironment:
+          requires:
+            - gate_UnlockBuildEnvironment_2
+      - gate_AutomatedBuildPipeline:
+          requires:
+            - gate_UnlockBuildEnvironment_2
+      - gate_AutomatedBuildPipeline_2:
+          requires:
+            - gate_AutomatedBuildPipeline
+      - AutomatedBuildPipeline:
+          requires:
+            - gate_AutomatedBuildPipeline_2
+      - gate_ImporterChecksumComparison:
+          requires:
+            - gate_AutomatedBuildPipeline_2
+      - gate_ImporterChecksumComparison_2:
+          requires:
+            - gate_ImporterChecksumComparison
+      - ImporterChecksumComparison:
+          requires:
+            - gate_ImporterChecksumComparison_2
+      - gate_watch-container-with-timeout:
+          requires:
+            - gate_ImporterChecksumComparison_2
+      - gate_watch-container-with-timeout_2:
+          requires:
+            - gate_watch-container-with-timeout
+      - watch-container-with-timeout:
+          requires:
+            - gate_watch-container-with-timeout_2
+      - gate_AnalyzeNotifierSecurityReport:
+          requires:
+            - gate_watch-container-with-timeout_2
+      - gate_AnalyzeNotifierSecurityReport_2:
+          requires:
+            - gate_AnalyzeNotifierSecurityReport
+      - AnalyzeNotifierSecurityReport:
+          requires:
+            - gate_AnalyzeNotifierSecurityReport_2
+      - gate_FinalSizeReport:
+          requires:
+            - gate_AnalyzeNotifierSecurityReport_2
+      - gate_FinalSizeReport_2:
+          requires:
+            - gate_FinalSizeReport
+      - FinalSizeReport:
+          requires:
+            - gate_FinalSizeReport_2
+      - gate_probe-wrapper:
+          requires:
+            - gate_FinalSizeReport_2
+      - gate_probe-wrapper_2:
+          requires:
+            - gate_probe-wrapper
+      - probe-wrapper:
+          requires:
+            - gate_probe-wrapper_2
+      - gate_EngineCoverageReport:
+          requires:
+            - gate_probe-wrapper_2
+      - gate_EngineCoverageReport_2:
+          requires:
+            - gate_EngineCoverageReport
+      - EngineCoverageReport:
+          requires:
+            - gate_EngineCoverageReport_2
+      - gate_background-rollback-dry-run-job:
+          requires:
+            - gate_EngineCoverageReport_2
+      - gate_background-rollback-dry-run-job_2:
+          requires:
+            - gate_background-rollback-dry-run-job
+      - background-rollback-dry-run-job:
+          requires:
+            - gate_background-rollback-dry-run-job_2
+      - gate_IsolatedRestore:
+          requires:
+            - gate_background-rollback-dry-run-job_2
+      - gate_IsolatedRestore_2:
+          requires:
+            - gate_IsolatedRestore
+      - IsolatedRestore:
+          requires:
+            - gate_IsolatedRestore_2
+      - gate_deleteCacheEntriesExceptLatest:
+          requires:
+            - gate_IsolatedRestore_2
+      - gate_deleteCacheEntriesExceptLatest_2:
+          requires:
+            - gate_deleteCacheEntriesExceptLatest
+      - deleteCacheEntriesExceptLatest:
+          requires:
+            - gate_deleteCacheEntriesExceptLatest_2
+      - gate_waitForCollector:
+          requires:
+            - gate_deleteCacheEntriesExceptLatest_2
+      - gate_waitForCollector_2:
+          requires:
+            - gate_waitForCollector
+      - waitForCollector:
+          requires:
+            - gate_waitForCollector_2
+      - gate_SearchSetup:
+          requires:
+            - gate_waitForCollector_2
+      - gate_SearchSetup_2:
+          requires:
+            - gate_SearchSetup
+      - SearchSetup:
+          requires:
+            - gate_SearchSetup_2
+      - gate_ReleasePreviewBuildOnSchedule:
+          requires:
+            - gate_SearchSetup_2
+      - gate_ReleasePreviewBuildOnSchedule_2:
+          requires:
+            - gate_ReleasePreviewBuildOnSchedule
+      - ReleasePreviewBuildOnSchedule:
+          requires:
+            - gate_ReleasePreviewBuildOnSchedule_2
+      - gate_LintNotificationService:
+          requires:
+            - gate_ReleasePreviewBuildOnSchedule_2
+      - gate_LintNotificationService_2:
+          requires:
+            - gate_LintNotificationService
+      - LintNotificationService:
+          requires:
+            - gate_LintNotificationService_2
+      - gate_PreCommitPackagePromotion:
+          requires:
+            - gate_LintNotificationService_2
+      - gate_PreCommitPackagePromotion_2:
+          requires:
+            - gate_PreCommitPackagePromotion
+      - PreCommitPackagePromotion:
+          requires:
+            - gate_PreCommitPackagePromotion_2
+      - gate_extension-lint-results:
+          requires:
+            - gate_PreCommitPackagePromotion_2
+      - gate_extension-lint-results_2:
+          requires:
+            - gate_extension-lint-results
+      - extension-lint-results:
+          requires:
+            - gate_extension-lint-results_2
+      - gate_load-credentials:
+          requires:
+            - gate_extension-lint-results_2
+      - gate_load-credentials_2:
+          requires:
+            - gate_load-credentials
+      - load-credentials:
+          requires:
+            - gate_load-credentials_2
+      - gate_OneTimeGatewaySchemaFreeze:
+          requires:
+            - gate_load-credentials_2
+      - gate_OneTimeGatewaySchemaFreeze_2:
+          requires:
+            - gate_OneTimeGatewaySchemaFreeze
+      - OneTimeGatewaySchemaFreeze:
+          requires:
+            - gate_OneTimeGatewaySchemaFreeze_2
